@@ -38,13 +38,16 @@ export default {
         email: "",
         password: "",
         password_confirmation: "",
+        
       },
+      apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
+
     };
   },
   methods: {
     async register() {
       try {
-        axios.post("http://127.0.0.1:8000/api/register", this.form, {
+        axios.post(this.apiBaseUrl+"api/register", this.form, {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",

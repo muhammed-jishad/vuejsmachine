@@ -163,7 +163,7 @@ export default {
   },
   async created() {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/getUsers', this.getAuthHeaders());
+      const res = await axios.get(this.apiBaseUrl+'api/getUsers', this.getAuthHeaders());
       this.allUsers = res.data.users;
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -203,7 +203,7 @@ export default {
         };
 
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/projects/${this.projectId}/tasks`,
+          `${this.apiBaseUrl}api/projects/${this.projectId}/tasks`,
           config
         );
         this.tasks = response.data;
@@ -223,7 +223,7 @@ export default {
 
 
         const response = await axios.post(
-          `http://127.0.0.1:8000/api/projects/${this.projectId}/tasks`,
+          `${this.apiBaseUrl}api/projects/${this.projectId}/tasks`,
           taskData,
           this.getAuthHeaders()
         );
@@ -246,7 +246,7 @@ export default {
     async deleteTask(taskId) {
       if (!confirm("Are you sure you want to delete this task?")) return;
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/tasks/${taskId}`, this.getAuthHeaders());
+        await axios.delete(`${this.apiBaseUrl}api/tasks/${taskId}`, this.getAuthHeaders());
         this.tasks = this.tasks.filter((task) => task.id !== taskId);
       } catch (error) {
         console.error("Error deleting task:", error);
@@ -256,7 +256,7 @@ export default {
     async fetchComments(taskId) {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/tasks/${taskId}/comments`,
+          `${this.apiBaseUrl}api/tasks/${taskId}/comments`,
           this.getAuthHeaders()
         );
         this.$set(this.comments, taskId, response.data);
@@ -269,7 +269,7 @@ export default {
       if (!this.newComments[taskId]) return;
       try {
         const response = await axios.post(
-          `http://127.0.0.1:8000/api/tasks/${taskId}/comments`,
+          `${this.apiBaseUrl}api/tasks/${taskId}/comments`,
           { content: this.newComments[taskId] },
           this.getAuthHeaders()
         );
@@ -284,7 +284,7 @@ export default {
     async deleteComment(taskId, commentId) {
       try {
         await axios.delete(
-          `http://127.0.0.1:8000/api/tasks/${taskId}/comments/${commentId}`,
+          `${this.apiBaseUrl}api/tasks/${taskId}/comments/${commentId}`,
           this.getAuthHeaders()
         );
         this.comments[taskId] = this.comments[taskId].filter((c) => c.id !== commentId);

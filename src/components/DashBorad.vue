@@ -171,6 +171,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
       invitations: [],
       loadingInvitations: false,
       errorInvitations: null,
@@ -190,7 +191,7 @@ export default {
   },
   async created() {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/user', this.getAuthHeaders());
+      const res = await axios.get(this.apiBaseUrl+'api/user', this.getAuthHeaders());
       this.user = res.data;
       this.fetchInvitations(); // <- fetch invitations once user is known
     } catch {
@@ -209,7 +210,7 @@ export default {
     },
     async logout() {
       try {
-        await axios.post('http://127.0.0.1:8000/api/logout', {}, this.getAuthHeaders());
+        await axios.post(this.apiBaseUrl+'api/logout', {}, this.getAuthHeaders());
         localStorage.removeItem('token');
         this.$router.push('/login');
       } catch {
@@ -217,7 +218,7 @@ export default {
       }
     },
     async getProjects() {
-      const res = await axios.get('http://127.0.0.1:8000/api/projects', this.getAuthHeaders());
+      const res = await axios.get(this.apiBaseUrl+'api/projects', this.getAuthHeaders());
 
       this.projects = (res.data.owned_projects || []).concat(res.data.invited_projects || []);
     },
@@ -242,7 +243,7 @@ export default {
       this.loadingInvitations = true;
       this.errorInvitations = null;
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/invitations',
+        const response = await fetch(this.apiBaseUrl+'api/invitations',
           this.getAuthHeaders(),
         );
         if (!response.ok) throw new Error('Failed to fetch invitations');
@@ -255,7 +256,7 @@ export default {
     },
     async acceptInvite(inviteToken) {
       try {
-        await axios.get(`http://127.0.0.1:8000/api/accept-invite/${inviteToken}`);
+        await axios.get(this.apiBaseUrl+'api/accept-invite/'+inviteToken);
         alert('Invitation accepted!');
         this.getProjects();     // refresh project list
         this.fetchInvitations();  // refresh invitation list
@@ -265,21 +266,21 @@ export default {
       }
     },
     async createProject() {
-      await axios.post('http://127.0.0.1:8000/api/projects', this.form, this.getAuthHeaders());
+      await axios.post(this.apiBaseUrl+'api/projects', this.form, this.getAuthHeaders());
       this.closeModal();
       this.getProjects();
     },
     async updateProject() {
-      await axios.put(`http://127.0.0.1:8000/api/projects/${this.form.id}`, this.form, this.getAuthHeaders());
+      await axios.put(`${this.apiBaseUrl}api/projects/${this.form.id}`, this.form, this.getAuthHeaders());
       this.closeModal();
       this.getProjects();
     },
     async deleteProject(id) {
-      await axios.delete(`http://127.0.0.1:8000/api/projects/${id}`, this.getAuthHeaders());
+      await axios.delete(`${this.apiBaseUrl}api/projects/${id}`, this.getAuthHeaders());
       this.getProjects();
     },
     async viewProject(id) {
-      const res = await axios.get(`http://127.0.0.1:8000/api/projects/${id}`, this.getAuthHeaders());
+      const res = await axios.get(`${this.apiBaseUrl}/api/projects/${id}`, this.getAuthHeaders());
       this.selectedProject = res.data;
       this.showDetailModal = true;
     },
@@ -297,7 +298,7 @@ export default {
       this.showInviteModal = true;
 
       try {
-        const res = await axios.get('http://127.0.0.1:8000/api/getUsers', this.getAuthHeaders());
+        const res = await axios.get(this.apiBaseUrl+'api/getUsers', this.getAuthHeaders());
         this.allUsers = res.data.users;
       } catch (error) {
         console.error('Failed to load users:', error);
@@ -308,7 +309,7 @@ export default {
       this.showInviteModal = false;
     },
     async inviteToProject() {
-      await axios.post(`http://127.0.0.1:8000/api/projects/${this.selectedProjectId}/invite`, this.invite, this.getAuthHeaders());
+      await axios.post(`${this.apiBaseUrl}api/projects/${this.selectedProjectId}/invite`, this.invite, this.getAuthHeaders());
       this.closeInviteModal();
     },
   }
