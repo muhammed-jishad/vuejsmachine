@@ -1,9 +1,42 @@
-<<<<<<< HEAD
-# Vue 3 + Vite
+Mini Project Management System
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A full-stack project management tool built with Laravel 12 (API) and Vue 3 + Vite (Frontend).
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
-=======
-# vuejsmachine
->>>>>>> d530a9a6ee82a69079a33ec5f8f7ddac2a74d844
+Tech Stack
+
+Backend  :Laravel, Sanctum (Auth)
+Frontend: Vue 3, Vite, Vue Router, Axios, Bootstrap 5
+
+ Features
+
+-  User Auth (Sanctum)
+-  Project & Task CRUD
+-  Task assignment
+-  Invite users via email
+-  Comments on tasks
+-  Filter/sort tasks
+-  Authorization with Laravel Policies
+
+ Setup
+
+Backend
+
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+
+frontend
+
+https://github.com/muhammed-jishad/vuejsmachine.git
+
+npm install
+npm run dev
+
+version
+
+"php": "^8.2",
+"laravel/framework": "^12.13",
+"vue": "^3.5.13",
+"axios": "^1.9.0"
